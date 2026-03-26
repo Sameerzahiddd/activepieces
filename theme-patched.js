@@ -1,42 +1,30 @@
-import tinycolor from 'tinycolor2'
-
-function generateColorVariations(defaultColor: string) {
-    const defaultColorObj = tinycolor(defaultColor)
-
-    const darkColor = defaultColorObj.clone().darken(2)
-    const baseLight = tinycolor('#ffffff')
-    const lightColor = tinycolor
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.defaultTheme = void 0;
+exports.generateTheme = generateTheme;
+const tslib_1 = require("tslib");
+const tinycolor2_1 = tslib_1.__importDefault(require("tinycolor2"));
+function generateColorVariations(defaultColor) {
+    const defaultColorObj = (0, tinycolor2_1.default)(defaultColor);
+    const darkColor = defaultColorObj.clone().darken(2);
+    const baseLight = (0, tinycolor2_1.default)('#ffffff');
+    const lightColor = tinycolor2_1.default
         .mix(baseLight, defaultColorObj.toHex(), 12)
-        .toHexString()
-    const mediumColor = defaultColorObj.clone().lighten(26)
-
+        .toHexString();
+    const mediumColor = defaultColorObj.clone().lighten(26);
     return {
         default: defaultColorObj.toHexString(),
         dark: darkColor.toHexString(),
         light: lightColor,
         medium: mediumColor.toHexString(),
-    }
+    };
 }
-
-function generateSelectionColor(defaultColor: string) {
-    const defaultColorObj = tinycolor(defaultColor)
-    const lightColor = defaultColorObj.lighten(8)
-    return lightColor.toHexString()
+function generateSelectionColor(defaultColor) {
+    const defaultColorObj = (0, tinycolor2_1.default)(defaultColor);
+    const lightColor = defaultColorObj.lighten(8);
+    return lightColor.toHexString();
 }
-
-export function generateTheme({
-    primaryColor,
-    fullLogoUrl,
-    favIconUrl,
-    logoIconUrl,
-    websiteName,
-}: {
-    primaryColor: string
-    fullLogoUrl: string
-    favIconUrl: string
-    logoIconUrl: string
-    websiteName: string
-}) {
+function generateTheme({ primaryColor, fullLogoUrl, favIconUrl, logoIconUrl, websiteName, }) {
     return {
         websiteName,
         colors: {
@@ -60,13 +48,13 @@ export function generateTheme({
             favIconUrl,
             logoIconUrl,
         },
-    }
+    };
 }
-
-export const defaultTheme = generateTheme({
+exports.defaultTheme = generateTheme({
     primaryColor: '#6e41e2',
     websiteName: 'otom8',
     fullLogoUrl: 'https://cdn.activepieces.com/brand/full-logo.png',
     favIconUrl: 'https://cdn.activepieces.com/brand/favicon.ico',
     logoIconUrl: 'https://cdn.activepieces.com/brand/logo.svg',
-})
+});
+//# sourceMappingURL=theme.js.map
