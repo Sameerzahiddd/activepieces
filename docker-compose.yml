@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/activepieces/activepieces:0.79.0
+    image: ghcr.io/sameerzahiddd/activepieces:latest
     container_name: activepieces-app
     restart: unless-stopped
     ports:
@@ -18,7 +18,7 @@ services:
     networks:
       - activepieces
   worker:
-    image: ghcr.io/activepieces/activepieces:0.79.0
+    image: ghcr.io/sameerzahiddd/activepieces:latest
     restart: unless-stopped
     depends_on:
       - app
