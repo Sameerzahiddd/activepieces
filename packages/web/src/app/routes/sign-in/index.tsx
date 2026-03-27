@@ -1,11 +1,11 @@
-import { AuthFormTemplate } from '@/features/authentication';
+import { useEffect } from 'react';
 
 const SignInPage: React.FC = () => {
-  return (
-    <div className="mx-auto flex h-screen flex-col items-center justify-center gap-2">
-      <AuthFormTemplate form={'signin'} />
-    </div>
-  );
+  useEffect(() => {
+    window.location.replace('https://otom8.us/login');
+  }, []);
+
+  return null;
 };
 
 SignInPage.displayName = 'SignInPage';
