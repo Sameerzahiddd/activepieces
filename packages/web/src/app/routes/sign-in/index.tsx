@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 const SignInPage: React.FC = () => {
   useEffect(() => {
-    window.location.replace('https://otom8.us/login');
+    window.location.replace('https://otom8.us/auth/signout');
   }, []);
 
   return null;
