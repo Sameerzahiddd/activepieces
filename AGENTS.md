@@ -1,5 +1,11 @@
 # Activepieces — Coding Rules
 
+## otom8 fork context
+
+This repo is the **automation app** only. The marketing site + Clerk + SSO bridge live in the sibling **`otom8-site`** repo. How they fit together: **`WORKSPACE.md`** at the root of this repository.
+
+---
+
 ## File Structure
 
 - **Exported types and constants must be placed at the end of the file**, after all logic (functions, hooks, components, classes, etc.). This keeps the logic front and centre when reading a file, and groups the public contract at a predictable location.

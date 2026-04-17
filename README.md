@@ -52,6 +52,8 @@ src="https://github.com/activepieces/activepieces/assets/1812998/76c97441-c285-4
 
 This repository is the **otom8 fork** of Activepieces (the automation app). The **login / marketing site** is a **separate Next.js app** in **`../otom8-site/`** (sibling folder, not inside `ap/`). Most of the Clerk SSO and branding work lives across **both** places.
 
+**Architecture (site vs app):** read **`WORKSPACE.md`** in this repo (duplicate lives in `otom8-site` too). If you keep a parent folder like `Otom8` with both repos, you may also have **`../CLAUDE.md`** there — local umbrella notes, not required for git.
+
 ### What “run dev” means here
 
 There are two ways to develop:
@@ -93,7 +95,7 @@ There are two ways to develop:
 
 5. **In the browser** open **http://localhost:3000** → sign in → you should land in the app at **http://localhost:8080** after SSO. That path exercises Clerk, redirects, and the UI changes in **both** repos.
 
-More detail: see **`../CLAUDE.md`** at the workspace root (otom8-wide overview).
+More detail: **`WORKSPACE.md`** (this repo) or a parent-folder **`CLAUDE.md`** if you maintain one next to `ap/` and `otom8-site/`.
 
 ### Have these changes been pushed to GitHub?
 
