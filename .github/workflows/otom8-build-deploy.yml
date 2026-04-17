@@ -5,7 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# GitHub is moving JS actions to Node 24; silences deprecation annotations on checkout/docker actions.
+# https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   IMAGE_NAME: ghcr.io/sameerzahiddd/activepieces
 
 jobs:
