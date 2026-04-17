@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { SIDEBAR_ID } from '@/app/components/sidebar/dashboard';
 import { stepsHooks } from '@/features/pieces';
 
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
+
 import {
   useCursorPosition,
   useCursorPositionEffect,
@@ -28,6 +30,9 @@ const StepDragOverlay = ({ step }: { step: FlowAction | FlowTrigger }) => {
   const { stepMetadata } = stepsHooks.useStepMetadata({
     step,
   });
+  const rawLogoUrl =
+    step?.settings?.customLogoUrl ?? stepMetadata?.logoUrl ?? '';
+  const dragLogoSrc = apHostedAssetUrl(rawLogoUrl) ?? rawLogoUrl;
   useCursorPositionEffect((position) => {
     setOverlayPosition(position);
   });
@@ -48,7 +53,7 @@ const StepDragOverlay = ({ step }: { step: FlowAction | FlowTrigger }) => {
       <img
         id={t('logo')}
         className={'object-contain left-0 right-0 static !cursor-grabbing'}
-        src={step?.settings?.customLogoUrl ?? stepMetadata?.logoUrl}
+        src={dragLogoSrc}
         alt={t('Step Icon')}
       />
     </div>

@@ -51,11 +51,19 @@ const HomeButton = () => {
                 className={showBackButton ? 'size-8' : 'size-10'}
               >
                 {!showBackButton && (
-                  <img
-                    className="h-5 w-5 object-contain"
-                    src={branding.logos.logoIconUrl}
-                    alt={branding.websiteName}
-                  />
+                  <span
+                    className="inline-flex h-5 items-center text-base font-semibold tracking-tight"
+                    style={{
+                      fontFamily:
+                        "var(--font-display), 'Cormorant Garamond', Georgia, serif",
+                      color: 'hsl(var(--foreground))',
+                    }}
+                    aria-label={branding.websiteName}
+                  >
+                    ot
+                    <span style={{ color: 'hsl(var(--primary))' }}>∞</span>
+                    m8
+                  </span>
                 )}
                 {showBackButton && <ChevronLeft className="h-4 w-4" />}
               </Button>

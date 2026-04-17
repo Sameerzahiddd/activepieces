@@ -29,6 +29,7 @@ import { Input } from '@/components/ui/input';
 import { OAuth2App, oauth2Utils } from '@/features/connections';
 import { appConnectionsApi } from '@/features/connections/api/app-connections';
 import { flagsHooks } from '@/hooks/flags-hooks';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 
 import { GenericPropertiesForm } from '../builder/piece-properties/generic-properties-form';
 
@@ -125,7 +126,10 @@ function OAuth2ConnectionSettings({
       {grantType !== OAuth2GrantType.CLIENT_CREDENTIALS && (
         <div className="border border-solid p-2 rounded-lg gap-2 flex text-center items-center justify-center h-full">
           <div className="rounded-full border border-solid p-1 flex items-center justify-center">
-            <img src={piece.logoUrl} className="w-5 h-5"></img>
+            <img
+              src={apHostedAssetUrl(piece.logoUrl) ?? piece.logoUrl}
+              className="w-5 h-5"
+            ></img>
           </div>
           <div className="text-sm">{piece.displayName}</div>
           <div className="grow"></div>

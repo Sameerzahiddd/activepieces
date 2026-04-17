@@ -16,6 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { piecesHooks } from '@/features/pieces';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 
 import { CreateOrEditConnectionDialog } from './create-edit-connection-dialog';
 
@@ -104,7 +105,7 @@ const NewConnectionDialog = React.memo(
                     >
                       <img
                         className="w-[40px] h-[40px]"
-                        src={piece.logoUrl}
+                        src={apHostedAssetUrl(piece.logoUrl) ?? piece.logoUrl}
                       ></img>
                       <div className="mt-2 text-center text-md">
                         {piece.displayName}

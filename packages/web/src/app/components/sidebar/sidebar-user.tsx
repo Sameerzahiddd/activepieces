@@ -1,141 +1,114 @@
-import { isNil, Permission } from '@activepieces/shared';
-import { useQueryClient } from '@tanstack/react-query';
-import { t } from 'i18next';
-import { ChevronsUpDown, LogOut, UserCogIcon, UserPlus } from 'lucide-react';
-import { useState } from 'react';
-
-import { UserAvatar } from '@/components/custom/user-avatar';
-import { useEmbedding } from '@/components/providers/embed-provider';
-import { useTelemetry } from '@/components/providers/telemetry-provider';
+import { Permission } from '@activepieces/shared';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  OrganizationSwitcher,
+  UserButton,
+  useOrganization,
+  useUser,
+} from '@clerk/clerk-react';
+import { t } from 'i18next';
+import { UserPlus } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+
+import { useEmbedding } from '@/components/providers/embed-provider';
 import {
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar-shadcn';
 import { InviteUserDialog } from '@/features/members';
 import { useAuthorization } from '@/hooks/authorization-hooks';
-import { userHooks } from '@/hooks/user-hooks';
-import { authenticationSession } from '@/lib/authentication-session';
-import { cn } from '@/lib/utils';
+import { otom8ClerkAppearance } from '@/lib/otom8-clerk-appearance';
+import { OTOM8_SITE_URL } from '@/lib/otom8-site-url';
 
-import AccountSettingsDialog from '../account-settings';
-import { HelpAndFeedback } from '../help-and-feedback';
-
+// Replaces AP's native sidebar user dropdown with Clerk's <UserButton /> and
+// exposes org switching via <OrganizationSwitcher />. When the active Clerk
+// org changes, we bounce through /api/ap-sso on the otom8 site so AP
+// re-authenticates under the new org's externalProjectId (see
+// site/api/ap-sso/route.ts). OTOM8_SITE_URL comes from lib/deploy-env.ts
+// (localhost → local site; prod build on app host → otom8.us).
 export function SidebarUser() {
-  const [accountSettingsOpen, setAccountSettingsOpen] = useState(false);
   const [inviteUserOpen, setInviteUserOpen] = useState(false);
   const { embedState } = useEmbedding();
   const { state } = useSidebar();
-  const { data: user } = userHooks.useCurrentUser();
-  const queryClient = useQueryClient();
-  const { reset } = useTelemetry();
+  const { user, isLoaded: userLoaded } = useUser();
+  const { organization } = useOrganization();
   const { checkAccess } = useAuthorization();
   const canInviteUsers = checkAccess(Permission.WRITE_INVITATION);
   const isCollapsed = state === 'collapsed';
 
-  if (!user || embedState.isEmbedded) {
+  // Re-run SSO whenever the active Clerk org changes, so AP's project context
+  // moves with the user. We skip the first render (baseline value).
+  const lastOrgRef = useRef<string | null | undefined>(undefined);
+  useEffect(() => {
+    const current = organization?.id ?? null;
+    if (lastOrgRef.current === undefined) {
+      lastOrgRef.current = current;
+      return;
+    }
+    if (lastOrgRef.current !== current) {
+      lastOrgRef.current = current;
+      window.location.replace(`${OTOM8_SITE_URL}/api/ap-sso`);
+    }
+  }, [organization?.id]);
+
+  if (!userLoaded || !user || embedState.isEmbedded) {
     return null;
   }
 
-  const handleLogout = () => {
-    userHooks.invalidateCurrentUser(queryClient);
-    authenticationSession.logOut();
-    reset();
-  };
+  const displayName =
+    user.firstName && user.lastName
+      ? `${user.firstName} ${user.lastName}`
+      : user.primaryEmailAddress?.emailAddress ?? '';
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <DropdownMenu modal>
-          <DropdownMenuTrigger asChild className="w-full">
-            <SidebarMenuButton className="h-10! pl-1! group-data-[collapsible=icon]:h-10! group-data-[collapsible=icon]:pl-1!">
-              <div className="size-6 shrink-0 overflow-hidden flex items-center justify-center rounded-full">
-                <UserAvatar
-                  className={cn('size-full object-cover', {
-                    'scale-150': isNil(user.imageUrl),
-                  })}
-                  name={user.firstName + ' ' + user.lastName}
-                  email={user.email}
-                  imageUrl={user.imageUrl}
-                  size={24}
-                  disableTooltip={true}
-                />
-              </div>
-
-              {!isCollapsed && (
-                <>
-                  <span className="truncate">
-                    {user.firstName + ' ' + user.lastName}
-                  </span>
-                  <ChevronsUpDown className="ml-auto size-4" />
-                </>
-              )}
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg z-999"
-            side="top"
-            align="start"
-            sideOffset={10}
-          >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <div className="size-8 shrink-0 overflow-hidden rounded-full">
-                  <UserAvatar
-                    className="size-full object-cover"
-                    name={user.firstName + ' ' + user.lastName}
-                    email={user.email}
-                    imageUrl={user.imageUrl}
-                    size={32}
-                    disableTooltip={true}
-                  />
-                </div>
-
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">
-                    {user.firstName + ' ' + user.lastName}
-                  </span>
-                  <span className="truncate text-xs">{user.email}</span>
-                </div>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => setAccountSettingsOpen(true)}>
-                <UserCogIcon className="w-4 h-4 mr-2" />
-                {t('Account Settings')}
-              </DropdownMenuItem>
-              {canInviteUsers && (
-                <DropdownMenuItem onClick={() => setInviteUserOpen(true)}>
-                  <UserPlus className="w-4 h-4 mr-2" />
-                  {t('Invite User')}
-                </DropdownMenuItem>
-              )}
-              <HelpAndFeedback />
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
-              <LogOut className="w-4 h-4 mr-2" />
-              {t('Log out')}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="px-2 pt-1 pb-2">
+          <OrganizationSwitcher
+            appearance={otom8ClerkAppearance}
+            hidePersonal={false}
+            afterCreateOrganizationUrl={`${OTOM8_SITE_URL}/api/ap-sso`}
+            afterLeaveOrganizationUrl={`${OTOM8_SITE_URL}/api/ap-sso`}
+            afterSelectOrganizationUrl={`${OTOM8_SITE_URL}/api/ap-sso`}
+            afterSelectPersonalUrl={`${OTOM8_SITE_URL}/api/ap-sso`}
+          />
+        </div>
       </SidebarMenuItem>
 
-      <AccountSettingsDialog
-        open={accountSettingsOpen}
-        onClose={() => setAccountSettingsOpen(false)}
-      />
+      <SidebarMenuItem>
+        <div
+          className="flex items-center gap-2 px-2 py-2 w-full"
+          data-testid="sidebar-user"
+        >
+          <UserButton
+            appearance={{
+              ...otom8ClerkAppearance,
+              elements: {
+                ...otom8ClerkAppearance.elements,
+                avatarBox: { width: '24px', height: '24px' },
+              },
+            }}
+            afterSignOutUrl={`${OTOM8_SITE_URL}/auth/signout`}
+            userProfileMode="modal"
+          >
+            {canInviteUsers && (
+              <UserButton.MenuItems>
+                <UserButton.Action
+                  label={t('Invite User')}
+                  labelIcon={<UserPlus className="w-4 h-4" />}
+                  onClick={() => setInviteUserOpen(true)}
+                />
+              </UserButton.MenuItems>
+            )}
+          </UserButton>
+          {!isCollapsed && (
+            <span className="truncate text-sm text-foreground">
+              {displayName}
+            </span>
+          )}
+        </div>
+      </SidebarMenuItem>
+
       <InviteUserDialog open={inviteUserOpen} setOpen={setInviteUserOpen} />
     </SidebarMenu>
   );

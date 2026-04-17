@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PieceStepMetadataWithSuggestions } from '@/features/pieces/types';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 
 import { usePieceToolsDialogStore } from '../../stores/pieces-tools';
 
@@ -58,7 +59,7 @@ export const PiecesList: React.FC<PiecesContentProps> = ({
                 <div className="size-9 flex items-center justify-center rounded-sm aspect-square border bg-background">
                   <img
                     className="size-6 rounded object-contain"
-                    src={piece.logoUrl}
+                    src={apHostedAssetUrl(piece.logoUrl) ?? piece.logoUrl}
                     alt={piece.displayName}
                   />
                 </div>

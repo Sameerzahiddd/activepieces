@@ -46,6 +46,69 @@ src="https://github.com/activepieces/activepieces/assets/1812998/76c97441-c285-4
 <br>
 <br>
 
+---
+
+## otom8 — run the full product locally
+
+This repository is the **otom8 fork** of Activepieces (the automation app). The **login / marketing site** is a **separate Next.js app** in **`../otom8-site/`** (sibling folder, not inside `ap/`). Most of the Clerk SSO and branding work lives across **both** places.
+
+### What “run dev” means here
+
+There are two ways to develop:
+
+| Goal | What to run |
+|------|-------------|
+| **See the real otom8 flow** (site → Clerk → SSO → this app) | From **`otom8-site/`**: `pnpm dev` (see below). |
+| **Only the Activepieces app** (no marketing site, no Clerk from our site) | Docker / compose **inside this `ap/` folder** (upstream-style). You will **not** test the full SSO hop unless the site is also running. |
+
+### Full stack (recommended) — site + this app
+
+1. Put **`ap/`** and **`otom8-site/`** next to each other (same parent folder), e.g. `Otom8/ap` and `Otom8/otom8-site`.
+
+2. **Configure the site**  
+   Copy `otom8-site/site/.env.local.example` → `otom8-site/site/.env.local` and fill in at least:
+   - Clerk **Development** keys (`pk_test_*` and `sk_test_*`). Production keys **do not** work on `localhost`.
+   - `NEXT_PUBLIC_SITE_URL=http://localhost:3000`
+   - `AP_BASE_URL=http://localhost:8080`
+   - `AP_SIGNING_KEY_ID` and `AP_SIGNING_KEY_PRIVATE` (must match the public key registered in local AP after bootstrap).
+
+3. **Start everything** — from **`otom8-site/`** (the folder that contains `package.json` with `dev:ap` / `dev:site`):
+
+   ```bash
+   pnpm dev
+   ```
+
+   This will:
+   - start **Activepieces** via Docker (`../ap/docker-compose.yml`) on **http://localhost:8080** if it is not already running;
+   - wait until the API is healthy;
+   - start the **Next.js** site on **http://localhost:3000** (fails if port 3000 is already in use).
+
+4. **First time only** (or after wiping AP’s database): with AP up, run:
+
+   ```bash
+   pnpm dev:bootstrap
+   ```
+
+   That registers the SSO signing key in local AP so `/api/ap-sso` works.
+
+5. **In the browser** open **http://localhost:3000** → sign in → you should land in the app at **http://localhost:8080** after SSO. That path exercises Clerk, redirects, and the UI changes in **both** repos.
+
+More detail: see **`../CLAUDE.md`** at the workspace root (otom8-wide overview).
+
+### Have these changes been pushed to GitHub?
+
+The AI assistant **cannot** push to your remotes. Whether code is on GitHub depends on **your** machine:
+
+```bash
+cd /path/to/Otom8/ap && git status
+cd /path/to/Otom8/otom8-site && git status
+```
+
+- If you see **modified** or **untracked** files, those edits exist **only locally** until you `git add`, `git commit`, and `git push`.
+- After a clean `git status`, your branch matches what you last committed; **`git push`** updates GitHub.
+
+---
+
 # 🤯 Welcome to Activepieces
 
 All-in-one AI automation designed to be **extensible** through a **type-safe** pieces framework written in **TypeScript**.

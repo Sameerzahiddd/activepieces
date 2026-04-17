@@ -12,6 +12,7 @@ import {
 import { ItemMediaImage } from '@/components/custom/item-media-image';
 import { Button } from '@/components/ui/button';
 import { AiProviderInfo } from '@/features/agents';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 
 import { UpsertAIProviderDialog } from './upsert-provider-dialog';
 
@@ -32,7 +33,8 @@ const AIProviderCard = ({
   onSave,
   allowWrite = true,
 }: AIProviderCardProps) => {
-  const logoUrl = providerInfo.logoUrl;
+  const logoUrl =
+    apHostedAssetUrl(providerInfo.logoUrl) ?? providerInfo.logoUrl;
 
   return (
     <Item variant="outline">

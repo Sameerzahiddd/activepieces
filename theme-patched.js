@@ -50,11 +50,14 @@ function generateTheme({ primaryColor, fullLogoUrl, favIconUrl, logoIconUrl, web
         },
     };
 }
+// otom8 branding — primary is marketing accent emerald (#10B981). Logo URLs
+// are intentionally blank so AP never renders an activepieces CDN asset; the
+// web package renders its own inline ot∞m8 wordmark in chrome components.
 exports.defaultTheme = generateTheme({
-    primaryColor: '#6e41e2',
+    primaryColor: '#10B981',
     websiteName: 'otom8',
-    fullLogoUrl: 'https://cdn.activepieces.com/brand/full-logo.png',
-    favIconUrl: 'https://cdn.activepieces.com/brand/favicon.ico',
-    logoIconUrl: 'https://cdn.activepieces.com/brand/logo.svg',
+    fullLogoUrl: '',
+    favIconUrl: '/favicon.ico',
+    logoIconUrl: '',
 });
 //# sourceMappingURL=theme.js.map

@@ -51,6 +51,7 @@ import {
 import { PieceIconWithPieceName } from '@/features/pieces';
 import { useAuthorization } from '@/hooks/authorization-hooks';
 import { platformHooks } from '@/hooks/platform-hooks';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 import { formatUtils } from '@/lib/format-utils';
 
 const STATUS_QUERY_PARAM = 'status';
@@ -314,7 +315,12 @@ const GlobalConnectionsTable = () => {
         lockDescription={t(
           'Manage platform-wide connections to external systems.',
         )}
-        lockVideoUrl="https://cdn.activepieces.com/videos/showcase/global-connections.mp4"
+        lockVideoUrl={
+          apHostedAssetUrl(
+            'https://cdn.activepieces.com/videos/showcase/global-connections.mp4',
+          ) ??
+          'https://cdn.activepieces.com/videos/showcase/global-connections.mp4'
+        }
       >
         <DashboardPageHeader
           description={t(

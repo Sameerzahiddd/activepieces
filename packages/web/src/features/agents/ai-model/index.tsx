@@ -17,6 +17,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { SUPPORTED_AI_PROVIDERS } from '@/features/agents/ai-providers';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 import { cn } from '@/lib/utils';
 
 import { aiModelHooks } from './hooks';
@@ -30,9 +31,11 @@ type AIModelSelectorProps = {
 
 const ACTIVEPIECES_PROVIDER_CONFIG = {
   provider: AIProviderName.ACTIVEPIECES,
-  name: 'Activepieces',
+  name: 'otom8',
   markdown: '',
-  logoUrl: 'https://cdn.activepieces.com/pieces/activepieces.png',
+  logoUrl:
+    apHostedAssetUrl('https://cdn.activepieces.com/pieces/activepieces.png') ??
+    'https://cdn.activepieces.com/pieces/activepieces.png',
 };
 
 const ALL_PROVIDERS = [...SUPPORTED_AI_PROVIDERS, ACTIVEPIECES_PROVIDER_CONFIG];

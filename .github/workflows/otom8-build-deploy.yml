@@ -36,6 +36,10 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64
+          build-args: |
+            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }}
+            VITE_DEPLOY_ENV=prod
+            VITE_OTOM8_SITE_URL=https://otom8.us
           tags: |
             ${{ env.IMAGE_NAME }}:latest
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
@@ -61,3 +65,17 @@ jobs:
             docker compose pull app worker
             docker compose up -d --no-deps app worker
             docker image prune -f
+            echo "==> Health check: /api/v1/flags inside app container"
+            ok=0
+            for i in $(seq 1 45); do
+              if docker compose exec -T app curl -sf http://127.0.0.1/api/v1/flags >/dev/null 2>&1; then
+                echo "    OK after ${i}s"
+                ok=1
+                break
+              fi
+              sleep 2
+            done
+            if [ "$ok" != "1" ]; then
+              echo "ERROR: Deploy finished but AP did not pass health check. Check: docker compose logs app" >&2
+              exit 1
+            fi

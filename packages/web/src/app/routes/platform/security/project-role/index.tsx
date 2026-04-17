@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/tooltip';
 import { projectRoleQueries } from '@/features/platform-admin';
 import { platformHooks } from '@/hooks/platform-hooks';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 
 import { ProjectRoleDialog } from './project-role-dialog';
 import { ProjectRolesTable } from './project-roles-table';
@@ -53,7 +54,11 @@ const ProjectRolePage = () => {
       lockDescription={t(
         'Define custom roles and permissions to control what your team members can access and modify',
       )}
-      lockVideoUrl="https://cdn.activepieces.com/videos/showcase/roles.mp4"
+      lockVideoUrl={
+        apHostedAssetUrl(
+          'https://cdn.activepieces.com/videos/showcase/roles.mp4',
+        ) ?? 'https://cdn.activepieces.com/videos/showcase/roles.mp4'
+      }
     >
       <CenteredPage
         title={t('Project Role Management')}

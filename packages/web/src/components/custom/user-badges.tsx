@@ -8,6 +8,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { flagsHooks } from '@/hooks/flags-hooks';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 
 interface UserBadgesProps {
   user: UserWithBadges | null | undefined;
@@ -62,7 +63,7 @@ export const UserBadges = ({
               <TooltipTrigger asChild>
                 <div className="cursor-pointer relative">
                   <img
-                    src={badge.imageUrl}
+                    src={apHostedAssetUrl(badge.imageUrl) ?? badge.imageUrl}
                     alt={badge.title}
                     className={`h-12 w-12 object-cover rounded-md ${
                       !isUnlocked && showLockedBadges

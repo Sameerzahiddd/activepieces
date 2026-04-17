@@ -19,21 +19,27 @@ import { platformHooks } from '@/hooks/platform-hooks';
 import { determineDefaultRoute } from '@/lib/route-utils';
 
 function SidebarLogoCollapsed({ linkTo }: { linkTo?: string }) {
-  const branding = flagsHooks.useWebsiteBranding();
   const navigate = useNavigate();
   return (
     <Button
       variant="ghost"
       size="icon"
       onClick={() => navigate(linkTo || '/')}
+      aria-label={t('home')}
       className="h-10! w-8! p-0! group-data-[collapsible=icon]:h-10! items-center justify-center"
     >
-      <img
-        src={branding.logos.logoIconUrl}
-        alt={t('home')}
-        className="h-5! w-5! shrink-0"
-        draggable={false}
-      />
+      <span
+        className="inline-flex items-center text-lg font-semibold leading-none tracking-tight"
+        style={{
+          fontFamily:
+            "var(--font-display), 'Cormorant Garamond', Georgia, serif",
+          color: 'hsl(var(--foreground))',
+        }}
+      >
+        o
+        <span style={{ color: 'hsl(var(--primary))' }}>∞</span>
+        8
+      </span>
     </Button>
   );
 }

@@ -29,6 +29,7 @@ import {
 import { PieceIconList } from '@/features/pieces';
 import { templatesApi, templatesMutations } from '@/features/templates';
 import { platformHooks } from '@/hooks/platform-hooks';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 
 import { CreateTemplateDialog } from './create-template-dialog';
 import { UpdateTemplateDialog } from './update-template-dialog';
@@ -213,7 +214,12 @@ const PlatformTemplatesPage = () => {
       lockDescription={t(
         'Convert the most common automations into reusable templates 1 click away from your users',
       )}
-      lockVideoUrl="https://cdn.activepieces.com/videos/showcase/templates.mp4"
+      lockVideoUrl={
+        apHostedAssetUrl(
+          'https://cdn.activepieces.com/videos/showcase/templates.mp4',
+        ) ??
+        'https://cdn.activepieces.com/videos/showcase/templates.mp4'
+      }
     >
       <div className="flex flex-col w-full">
         <DashboardPageHeader

@@ -6,6 +6,8 @@
     "@activepieces/pieces-common": "workspace:*",
     "@activepieces/pieces-framework": "workspace:*",
     "@activepieces/shared": "workspace:*",
+    "@clerk/clerk-react": "5.35.0",
+    "@clerk/types": "4.54.0",
     "@codemirror/lang-javascript": "6.2.2",
     "@codemirror/lang-json": "6.0.1",
     "@dnd-kit/core": "6.1.0",

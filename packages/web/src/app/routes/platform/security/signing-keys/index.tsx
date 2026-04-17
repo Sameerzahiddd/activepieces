@@ -1,6 +1,6 @@
 import { SigningKey } from '@activepieces/shared';
 import { t } from 'i18next';
-import { ExternalLink, Key, MoreHorizontal, Trash } from 'lucide-react';
+import { Key, MoreHorizontal, Trash } from 'lucide-react';
 
 import { CenteredPage } from '@/app/components/centered-page';
 import LockedFeatureGuard from '@/app/components/locked-feature-guard';
@@ -51,26 +51,7 @@ const SigningKeysPage = () => {
     >
       <CenteredPage
         title={t('Embedding')}
-        description={
-          <>
-            {t("Show your product's automations inside your own UI.")}
-            <Button
-              variant="link"
-              size="sm"
-              className="h-auto p-0 mt-0.5"
-              asChild
-            >
-              <a
-                href="https://www.activepieces.com/docs/embedding/overview"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {t('Read more')}
-                <ExternalLink className="size-3" />
-              </a>
-            </Button>
-          </>
-        }
+        description={t("Show your product's automations inside your own UI.")}
         actions={
           <NewSigningKeyDialog onCreate={() => refetch()}>
             <AnimatedIconButton icon={PlusIcon} iconSize={16} size="sm">

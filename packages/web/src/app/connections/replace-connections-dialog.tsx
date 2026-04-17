@@ -28,6 +28,7 @@ import {
 } from '@/features/connections';
 import { flowsApi } from '@/features/flows';
 import { PieceIconWithPieceName, piecesHooks } from '@/features/pieces';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 import { cn } from '@/lib/utils';
 
 type ReplaceConnectionsDialogProps = {
@@ -260,7 +261,9 @@ const ReplaceConnectionsDialog = ({
                         return (
                           <div className="flex gap-2 items-center">
                             <img
-                              src={piece!.logoUrl}
+                              src={
+                                apHostedAssetUrl(piece!.logoUrl) ?? piece!.logoUrl
+                              }
                               alt={piece!.displayName}
                               className="w-4 h-4 object-contain"
                             />

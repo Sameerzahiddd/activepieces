@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/tooltip';
 import { stepsHooks } from '@/features/pieces/hooks/steps-hooks';
 import { PieceStepMetadataWithSuggestions } from '@/features/pieces/types';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 
 import { usePieceToolsDialogStore } from '../stores/pieces-tools';
 
@@ -77,7 +78,10 @@ export const AgentPieceToolComponent = ({
             <div className="h-8 w-8 rounded-md bg-muted flex items-center justify-center">
               {pieceMetadata.logoUrl ? (
                 <img
-                  src={pieceMetadata.logoUrl}
+                  src={
+                    apHostedAssetUrl(pieceMetadata.logoUrl) ??
+                    pieceMetadata.logoUrl
+                  }
                   alt={pieceMetadata.displayName}
                   className="h-5 w-5 object-contain"
                 />

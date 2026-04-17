@@ -28,7 +28,7 @@ const LICENSE_PROPS_MAP = {
     label: 'Manage Templates',
   },
   customAppearanceEnabled: {
-    label: 'Brand Activepieces',
+    label: 'Brand otom8',
   },
   teamProjectsLimit: {
     label: 'Team Projects Limit',

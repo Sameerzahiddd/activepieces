@@ -33,6 +33,8 @@ import {
 } from '@/components/ui/accordion';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
+
 import { agentToolHooks } from '../agent-tool-hooks';
 
 interface AgentToolBlockProps {
@@ -104,7 +106,7 @@ export const AgentToolBlock = ({ block, index }: AgentToolBlockProps) => {
     if (metadata?.logoUrl)
       return (
         <img
-          src={metadata.logoUrl}
+          src={apHostedAssetUrl(metadata.logoUrl) ?? metadata.logoUrl}
           alt="Tool logo"
           className="h-4 w-4 object-contain shrink-0"
         />

@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 
 import { useSocket } from '@/components/providers/socket-provider';
 import { flagsHooks } from '@/hooks/flags-hooks';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 import { userHooks } from '@/hooks/user-hooks';
 
 import { AccountSettingsDialog } from './account-settings';
@@ -46,7 +47,7 @@ export const BadgeCelebrate = () => {
       toast.custom(
         () => (
           <BadgeToast
-            imageUrl={badgeImageUrl}
+            imageUrl={apHostedAssetUrl(badgeImageUrl) ?? badgeImageUrl}
             title={badgeTitle}
             description={badgeDescription}
             onClick={openAccountSettingsRef.current}

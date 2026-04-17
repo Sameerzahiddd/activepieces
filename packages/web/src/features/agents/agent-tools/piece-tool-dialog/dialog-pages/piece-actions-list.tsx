@@ -7,6 +7,7 @@ import { useDebounce } from 'use-debounce';
 
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 
 import { usePieceToolsDialogStore } from '../../stores/pieces-tools';
 
@@ -95,7 +96,10 @@ export const PieceActionsList: React.FC<PieceActionsDialogProps> = ({
                 <div className="size-9 flex items-center justify-center rounded-sm border bg-background">
                   <img
                     className="size-6 object-contain"
-                    src={selectedPiece.logoUrl}
+                    src={
+                      apHostedAssetUrl(selectedPiece.logoUrl) ??
+                      selectedPiece.logoUrl
+                    }
                     alt={selectedPiece.displayName}
                   />
                 </div>

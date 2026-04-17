@@ -11,8 +11,12 @@ import customHtmlPlugin from './vite-plugins/html-plugin';
 export default defineConfig(({ command, mode }) => {
   const isDev = command === 'serve' || mode === 'development';
 
-  const AP_TITLE = 'Activepieces';
-  const AP_FAVICON = 'https://activepieces.com/favicon.ico';
+  const AP_TITLE = 'otom8';
+  // Neutral transparent favicon data URI; runtime branding is applied by the
+  // dynamic theme (theme-patched.js / websiteBranding). Keeps AP's default
+  // favicon.ico off the network and out of the browser tab.
+  const AP_FAVICON =
+    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%230A0A0A"/><text x="16" y="22" font-family="Georgia, serif" font-size="18" font-weight="300" text-anchor="middle" fill="%2310B981">o</text></svg>';
 
   return {
     root: __dirname,

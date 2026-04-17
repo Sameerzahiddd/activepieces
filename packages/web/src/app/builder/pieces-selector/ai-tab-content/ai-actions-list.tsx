@@ -16,6 +16,7 @@ import {
   usePieceSearchContext,
 } from '@/features/pieces';
 import { flagsHooks } from '@/hooks/flags-hooks';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 
 import { useBuilderStateContext } from '../../builder-hooks';
 import { convertStepMetadataToPieceSelectorItems } from '../piece-actions-or-triggers-list';
@@ -28,14 +29,17 @@ type AIPieceActionsListProps = {
   operation: PieceSelectorOperation;
 };
 
+const apCdn = (path: string) =>
+  apHostedAssetUrl(`https://cdn.activepieces.com${path}`) ??
+  `https://cdn.activepieces.com${path}`;
+
 const ACTION_ICON_MAP: Record<string, string> = {
-  run_agent: 'https://cdn.activepieces.com/pieces/new-core/agent.svg',
-  generateImage: 'https://cdn.activepieces.com/pieces/new-core/image-ai.svg',
-  askAi: 'https://cdn.activepieces.com/pieces/new-core/text-ai.svg',
-  summarizeText: 'https://cdn.activepieces.com/pieces/new-core/text-ai.svg',
-  classifyText: 'https://cdn.activepieces.com/pieces/new-core/text-ai.svg',
-  extractStructuredData:
-    'https://cdn.activepieces.com/pieces/new-core/utility-ai.svg',
+  run_agent: apCdn('/pieces/new-core/agent.svg'),
+  generateImage: apCdn('/pieces/new-core/image-ai.svg'),
+  askAi: apCdn('/pieces/new-core/text-ai.svg'),
+  summarizeText: apCdn('/pieces/new-core/text-ai.svg'),
+  classifyText: apCdn('/pieces/new-core/text-ai.svg'),
+  extractStructuredData: apCdn('/pieces/new-core/utility-ai.svg'),
 };
 
 export const AIPieceActionsList: React.FC<AIPieceActionsListProps> = ({
@@ -64,7 +68,7 @@ export const AIPieceActionsList: React.FC<AIPieceActionsListProps> = ({
           const actionIcon =
             item.type === FlowActionType.PIECE
               ? ACTION_ICON_MAP[item.actionOrTrigger.name]
-              : 'https://cdn.activepieces.com/pieces/new-core/image-ai.svg';
+              : apCdn('/pieces/new-core/image-ai.svg');
           return (
             <AIActionItem
               key={index}

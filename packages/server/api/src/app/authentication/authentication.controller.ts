@@ -17,10 +17,19 @@ import { platformUtils } from '../platform/platform.utils'
 import { userService } from '../user/user-service'
 import { authenticationService } from './authentication.service'
 
+// otom8 replaces AP's native email/password auth with Clerk-backed SSO through
+// /api/v1/managed-authn/external-token. Native sign-up/sign-in are OFF by
+// default. Set OTOM8_DISABLE_NATIVE_AUTH=false only if you need the upstream
+// email/password endpoints (e.g. AP integration tests set this in .env.tests).
+const nativeAuthDisabled = process.env.OTOM8_DISABLE_NATIVE_AUTH !== 'false'
+
 export const authenticationController: FastifyPluginAsyncZod = async (
     app,
 ) => {
-    app.post('/sign-up', SignUpRequestOptions, async (request) => {
+    app.post('/sign-up', SignUpRequestOptions, async (request, reply) => {
+        if (nativeAuthDisabled) {
+            return reply.code(404).send({ code: 'NOT_FOUND', message: 'Not Found' })
+        }
 
         const platformId = await platformUtils.getPlatformIdForRequest(request)
         const signUpResponse = await authenticationService(request.log).signUp({
@@ -44,7 +53,10 @@ export const authenticationController: FastifyPluginAsyncZod = async (
         return signUpResponse
     })
 
-    app.post('/sign-in', SignInRequestOptions, async (request) => {
+    app.post('/sign-in', SignInRequestOptions, async (request, reply) => {
+        if (nativeAuthDisabled) {
+            return reply.code(404).send({ code: 'NOT_FOUND', message: 'Not Found' })
+        }
 
         const predefinedPlatformId = await platformUtils.getPlatformIdForRequest(request)
         const response = await authenticationService(request.log).signInWithPassword({

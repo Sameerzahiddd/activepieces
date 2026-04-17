@@ -1,3 +1,11 @@
+interface ImportMetaEnv {
+  readonly VITE_CLERK_PUBLISHABLE_KEY?: string;
+  readonly VITE_DEPLOY_ENV?: string;
+  readonly VITE_OTOM8_SITE_URL?: string;
+  /** Mirror base for https://cdn.activepieces.com/... (same paths). */
+  readonly VITE_PIECE_CDN_BASE_URL?: string;
+}
+
 declare module '*.module.css' {
   const classes: { readonly [key: string]: string };
   export default classes;

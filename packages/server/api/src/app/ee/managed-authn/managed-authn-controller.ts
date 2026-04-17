@@ -1,10 +1,22 @@
 import { ApplicationEventName, AuthenticationResponse,
     ManagedAuthnRequestBody,
 } from '@activepieces/shared'
+import { RateLimitOptions } from '@fastify/rate-limit'
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { securityAccess } from '../../core/security/authorization/fastify-security'
 import { applicationEvents } from '../../helper/application-events'
+import { system } from '../../helper/system/system'
+import { AppSystemProp } from '../../helper/system/system-props'
 import { managedAuthnService } from './managed-authn-service'
+
+// Same limits as /authentication/sign-in — this is the public SSO mint surface.
+const externalTokenRateLimit: RateLimitOptions = {
+    max: Number.parseInt(
+        system.getOrThrow(AppSystemProp.API_RATE_LIMIT_AUTHN_MAX),
+        10,
+    ),
+    timeWindow: system.getOrThrow(AppSystemProp.API_RATE_LIMIT_AUTHN_WINDOW),
+}
 
 export const managedAuthnController: FastifyPluginAsyncZod = async (
     app,
@@ -32,6 +44,7 @@ export const managedAuthnController: FastifyPluginAsyncZod = async (
 const ManagedAuthnRequest = {
     config: {
         security: securityAccess.public(),
+        rateLimit: externalTokenRateLimit,
     },
     schema: {
         body: ManagedAuthnRequestBody,

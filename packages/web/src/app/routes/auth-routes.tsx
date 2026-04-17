@@ -1,9 +1,8 @@
 import { PageTitle } from '@/app/components/page-title';
-import { VerifyEmail } from '@/features/authentication';
-import { AcceptInvitation } from '@/features/members';
 
 import { ChangePasswordPage } from './change-password';
 import { ResetPasswordPage } from './forget-password';
+import { RedirectToLogin } from './redirect-to-login';
 import { SignInPage } from './sign-in';
 import { SignUpPage } from './sign-up';
 
@@ -36,7 +35,7 @@ export const authRoutes = [
     path: '/verify-email',
     element: (
       <PageTitle title="Verify Email">
-        <VerifyEmail />
+        <RedirectToLogin />
       </PageTitle>
     ),
   },
@@ -52,7 +51,7 @@ export const authRoutes = [
     path: '/invitation',
     element: (
       <PageTitle title="Accept Invitation">
-        <AcceptInvitation />
+        <RedirectToLogin />
       </PageTitle>
     ),
   },

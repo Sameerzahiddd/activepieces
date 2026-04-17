@@ -25,6 +25,7 @@ import {
   usePieceToolsDialogStore,
 } from '@/features/agents';
 import { piecesHooks } from '@/features/pieces';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 
 import { selectGenericFormComponentForProperty } from '../../piece-properties/properties-utils';
 
@@ -160,7 +161,10 @@ export const PredefinedInputsForm = () => {
           <div className="flex size-11 shrink-0 items-center justify-center rounded-sm border bg-background">
             <img
               className="size-8 object-contain"
-              src={selectedPiece?.logoUrl}
+              src={
+                apHostedAssetUrl(selectedPiece?.logoUrl) ??
+                selectedPiece?.logoUrl
+              }
               alt={selectedPiece?.displayName}
             />
           </div>

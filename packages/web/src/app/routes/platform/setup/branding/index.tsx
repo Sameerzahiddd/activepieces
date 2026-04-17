@@ -4,6 +4,7 @@ import { CenteredPage } from '@/app/components/centered-page';
 import LockedFeatureGuard from '@/app/components/locked-feature-guard';
 import { AppearanceSection } from '@/app/routes/platform/setup/branding/appearance-section';
 import { platformHooks } from '@/hooks/platform-hooks';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 
 export const BrandingPage = () => {
   const { platform } = platformHooks.useCurrentPlatform();
@@ -15,7 +16,12 @@ export const BrandingPage = () => {
       lockDescription={t(
         'Give your users an experience that looks like you by customizing the color, logo and more',
       )}
-      lockVideoUrl="https://cdn.activepieces.com/videos/showcase/appearance.mp4"
+      lockVideoUrl={
+        apHostedAssetUrl(
+          'https://cdn.activepieces.com/videos/showcase/appearance.mp4',
+        ) ??
+        'https://cdn.activepieces.com/videos/showcase/appearance.mp4'
+      }
     >
       <CenteredPage
         title={t('Branding')}

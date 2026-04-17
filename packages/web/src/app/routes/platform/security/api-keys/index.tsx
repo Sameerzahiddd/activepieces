@@ -28,6 +28,7 @@ import { SkeletonList } from '@/components/ui/skeleton';
 import { internalErrorToast } from '@/components/ui/sonner';
 import { apiKeyApi, apiKeyQueries } from '@/features/platform-admin';
 import { platformHooks } from '@/hooks/platform-hooks';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 import { formatUtils } from '@/lib/format-utils';
 
 const ApiKeysPage = () => {
@@ -45,11 +46,16 @@ const ApiKeysPage = () => {
       lockDescription={t(
         'Create and manage API keys to access Activepieces APIs.',
       )}
-      lockVideoUrl="https://cdn.activepieces.com/videos/showcase/api-keys.mp4"
+      lockVideoUrl={
+        apHostedAssetUrl(
+          'https://cdn.activepieces.com/videos/showcase/api-keys.mp4',
+        ) ??
+        'https://cdn.activepieces.com/videos/showcase/api-keys.mp4'
+      }
     >
       <CenteredPage
         title={t('API Keys')}
-        description={t('Manage API keys to access Activepieces APIs.')}
+        description={t('Manage API keys to access otom8 APIs.')}
         actions={
           <NewApiKeyDialog onCreate={() => refetch()}>
             <AnimatedIconButton icon={PlusIcon} iconSize={16} size="sm">

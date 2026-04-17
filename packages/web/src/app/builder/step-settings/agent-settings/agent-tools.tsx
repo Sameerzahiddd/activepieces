@@ -15,13 +15,19 @@ import {
   AgentMcpDialog,
 } from '@/features/agents';
 
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
+
 import { AgentPieceDialog } from './piece-tool-dialog';
 
+const cdnPiece = (path: string) =>
+  apHostedAssetUrl(`https://cdn.activepieces.com${path}`) ??
+  `https://cdn.activepieces.com${path}`;
+
 const icons = [
-  'https://cdn.activepieces.com/pieces/youtube.png',
-  'https://cdn.activepieces.com/pieces/slack.png',
-  'https://cdn.activepieces.com/pieces/github.png',
-  'https://cdn.activepieces.com/pieces/notion.png',
+  cdnPiece('/pieces/youtube.png'),
+  cdnPiece('/pieces/slack.png'),
+  cdnPiece('/pieces/github.png'),
+  cdnPiece('/pieces/notion.png'),
 ];
 
 interface AgentToolsProps {

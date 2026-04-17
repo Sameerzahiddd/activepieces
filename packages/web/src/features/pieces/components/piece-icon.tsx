@@ -8,6 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { apHostedAssetUrl } from '@/lib/ap-hosted-asset-url';
 import { cn } from '@/lib/utils';
 
 const pieceIconVariants = cva(
@@ -59,6 +60,7 @@ const PieceIcon = React.memo(
     showTooltip,
     background,
   }: PieceIconProps) => {
+    const resolvedLogo = apHostedAssetUrl(logoUrl);
     return (
       <Tooltip>
         <TooltipTrigger asChild>
@@ -69,15 +71,15 @@ const PieceIcon = React.memo(
             )}
             style={background ? { backgroundColor: background } : undefined}
           >
-            {logoUrl ? (
+            {resolvedLogo ? (
               <ImageWithColorBackground
-                src={logoUrl}
+                src={resolvedLogo}
                 alt={displayName}
                 className={cn(
                   pieceIconVariantsWithPadding({ size }),
                   'object-contain w-full h-full',
                 )}
-                key={logoUrl}
+                key={resolvedLogo}
                 fallback={<Skeleton className="rounded-md w-full h-full" />}
               />
             ) : (
