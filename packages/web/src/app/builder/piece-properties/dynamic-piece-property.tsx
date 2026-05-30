@@ -199,7 +199,8 @@ const DynamicPropertiesImplementation = React.memo(
     }, [refresherValues]);
 
     const shouldShowSkeleton = isPending && !propertyMap;
-    const shouldShowProperties = !!propertyMap;
+    const shouldShowProperties =
+      !!propertyMap && Object.keys(propertyMap).length > 0;
     const showRefresh = !readonly && shouldShowProperties;
 
     if (!shouldShowSkeleton && !shouldShowProperties) {
