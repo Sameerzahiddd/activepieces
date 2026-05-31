@@ -1428,6 +1428,7 @@
   "Table": "Table",
   "CSV": "CSV",
   "Field": "Field",
+  "Fields": "Fields",
   "Please select a JSON or CSV file": "",
   "CSV import is only available for existing tables": "",
   "No tables found in template": "",
