@@ -12,6 +12,7 @@ services:
     env_file: .env
     environment:
       - AP_CONTAINER_TYPE=APP
+      - AP_INTERNAL_URL=https://app.otom8.us
       - OTOM8_DISABLE_NATIVE_AUTH=true
       - DEPLOY_ENV=prod
       - CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
